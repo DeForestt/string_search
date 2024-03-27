@@ -14,7 +14,7 @@ Add Magic String Search to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-magic_string_search = "0.1.4"
+magic_string_search = "0.1.5"
 ```
 
 ## Usage
