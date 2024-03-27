@@ -39,13 +39,10 @@ fn normalized_len_compare(subject: &str, sequence: &str) -> f64 {
     let min_window = sequence.len();
     let mut window = min_window;
 
-    if min_window > subject.len() {
+    if min_window > subject.len() || min_window == 0{
         return 0.0;
     }
-    if min_window == 0 {
-        return 0.0;
-    }
-
+   
     while window <= subject.len() {
         let mut i = 0;
         while i + window <= subject.len() {
@@ -74,7 +71,7 @@ pub fn compare(str1: &str, q: &str) -> f64 {
     let mut dp = create_dp(str1, q);
     let lcs = lcs_collected(str1, q, len1, len2, &mut dp).
         iter().collect::<String>();
-        
+
     if lcs.len() <= 1 {
         return 0.0;
     }
