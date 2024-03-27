@@ -92,6 +92,16 @@ pub fn rank<'a>(query: &str, subjects: Vec<&'a str>) -> Vec<(f64, &'a str)> {
     result
 }
 
+pub fn struct_rank<'a, T:Clone>(query: &str, subjects: Vec<T>, accessor: fn(&T) -> &str) -> Vec<(f64, T)> {
+    let mut result = Vec::new();
+    for subject in subjects {
+        let score = compare(accessor(&subject), query);
+        result.push((score, subject.clone()));
+    }
+    result.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
+    result
+}
+
 
 mod tests {
     use super::*;
