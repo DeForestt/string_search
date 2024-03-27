@@ -72,9 +72,9 @@ pub fn compare(str1: &str, q: &str) -> f64 {
     }
 
     let mut dp = create_dp(str1, q);
-    let lcs = lcs_collected(str1, q, len1, len2, &mut dp);
-    let lcs = lcs.iter().collect::<String>();
-
+    let lcs = lcs_collected(str1, q, len1, len2, &mut dp).
+        iter().collect::<String>();
+        
     if lcs.len() <= 1 {
         return 0.0;
     }
