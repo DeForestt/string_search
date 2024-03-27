@@ -75,7 +75,7 @@ pub fn compare(str1: &str, q: &str) -> f64 {
     let lcs = lcs_collected(str1, q, len1, len2, &mut dp);
     let lcs = lcs.iter().collect::<String>();
 
-    if lcs.len() == 0 {
+    if lcs.len() <= 1 {
         return 0.0;
     }
 
@@ -178,8 +178,8 @@ mod tests {
 
     #[test]
     fn test_compare_with_partial_match() {
-        let str1 = "AGGTAB";
-        let q = "GT";
+        let str1 = "Ad_Fields";
+        let q = "Ad";
         let result = compare(str1, q);
         assert_eq!(result, 2.0);
     }
@@ -198,5 +198,16 @@ mod tests {
         let q = "GA";
         let result = compare(str1, q);
         assert_eq!(result, 2.0 / 3.0 * 2.0);
+    }
+
+    #[test]
+    fn test_rank() {
+        let query = "Ad";
+        let subjects = vec!["Ad_Fields", "Users", "Aged_groups"];
+        let result = rank(query, subjects);
+        assert_eq!(result,
+                   vec![(2.0, "Ad_Fields"),
+                        (1.0, "Aged_groups"),
+                        (0.0, "Users"),]);
     }
 }
