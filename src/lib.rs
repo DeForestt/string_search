@@ -38,7 +38,7 @@ fn create_dp(a: &str, b: &str) -> Vec<Vec<i32>> {
 fn normalized_len_compare(subject: &str, sequence: &str) -> f64 {
     let min_window = sequence.len();
     let mut window = min_window;
-    
+
     if min_window > subject.len() {
         return 0.0;
     }
@@ -70,7 +70,7 @@ pub fn compare(str1: &str, q: &str) -> f64 {
     if len1 == 0 || len2 == 0 {
         return 0.0;
     }
-    
+
     let mut dp = create_dp(str1, q);
     let lcs = lcs_collected(str1, q, len1, len2, &mut dp);
     let lcs = lcs.iter().collect::<String>();
@@ -83,21 +83,30 @@ pub fn compare(str1: &str, q: &str) -> f64 {
 }
 
 pub fn rank<'a>(query: &str, subjects: Vec<&'a str>) -> Vec<(f64, &'a str)> {
-    let mut result = subjects.iter().map(|&subject| (compare(subject, query), subject)).collect::<Vec<(f64, &str)>>();
+    let mut result = subjects
+        .iter()
+        .map(|&subject| (compare(subject, query), subject))
+        .collect::<Vec<(f64, &str)>>();
     result.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
     result
 }
 
-pub fn struct_rank<'a, T:Clone>(query: &str, subjects: Vec<T>, accessor: fn(&T) -> &str) -> Vec<(f64, T)> {
-    let mut result = subjects.iter().map(|subject| (compare(accessor(subject), query), subject.clone())).collect::<Vec<(f64, T)>>();
+pub fn struct_rank<'a, T: Clone>(
+    query: &str,
+    subjects: Vec<T>,
+    accessor: fn(&T) -> &str,
+) -> Vec<(f64, T)> {
+    let mut result = subjects
+        .iter()
+        .map(|subject| (compare(accessor(subject), query), subject.clone()))
+        .collect::<Vec<(f64, T)>>();
     result.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
     result
 }
-
 
 mod tests {
     use super::*;
-   
+
     #[test]
     fn test_lcs_collected() {
         let a = "AGGTAB";
@@ -197,9 +206,9 @@ mod tests {
         let query = "Ad";
         let subjects = vec!["Ad_Fields", "Users", "Aged_groups"];
         let result = rank(query, subjects);
-        assert_eq!(result,
-                   vec![(2.0, "Ad_Fields"),
-                        (1.0, "Aged_groups"),
-                        (0.0, "Users"),]);
+        assert_eq!(
+            result,
+            vec![(2.0, "Ad_Fields"), (1.0, "Aged_groups"), (0.0, "Users"),]
+        );
     }
 }
