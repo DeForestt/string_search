@@ -101,6 +101,7 @@ pub fn struct_rank<'a, T: Clone>(
     result
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
 
