@@ -91,11 +91,11 @@ pub fn rank<'a>(query: &str, subjects: Vec<&'a str>) -> Vec<(f64, &'a str)> {
 pub fn struct_rank<'a, T: Clone>(
     query: &str,
     subjects: Vec<T>,
-    accessor: fn(&T) -> &str,
+    accessor: fn(&T) -> String,
 ) -> Vec<(f64, T)> {
     let mut result = subjects
         .iter()
-        .map(|subject| (compare(accessor(subject), query), subject.clone()))
+        .map(|subject| (compare(&accessor(subject), query), subject.clone()))
         .collect::<Vec<(f64, T)>>();
     result.sort_by(|a, b| b.0.partial_cmp(&a.0).unwrap());
     result
