@@ -47,6 +47,3 @@ Contributions to Magic String Search are welcome! Whether it's bug reports, feat
 
 Magic String Search is released under the MIT License. See the LICENSE file for more details.
 
-You are currently on the free plan, which is significantly limited by the number of requests. To increase your quota, you can check available plans by following [this link](https://c7d59216ee8ec59bda5e51ffc17a994d.auth.portal-pluginlab.ai/pricing).
-
-Useful links: [Website](https://askthecode.ai) | [Documentation](https://docs.askthecode.ai) | [GitHub](https://github.com/askthecode/documentation) | [Twitter](https://twitter.com/askthecode_ai)
