@@ -61,6 +61,23 @@ fn normalized_len_compare(subject: &str, sequence: &str) -> f64 {
     return 0.0;
 }
 
+/// Compares two strings and returns a score based on the longest common subsequence (LCS) and normalized length comparison.
+/// 
+/// # Arguments
+///
+/// * `str1` - A reference to the first string.
+/// * `q` - A reference to the query string.
+///
+/// # Returns
+///
+/// * A floating-point score representing the similarity between `str1` and `q`.
+///
+/// # Examples
+///
+/// ```
+/// let score = compare("AGGTAB", "AGGTAB");
+/// assert_eq!(score, 6.0);
+/// ```
 pub fn compare(str1: &str, q: &str) -> f64 {
     let len1 = str1.len();
     let len2 = q.len();
@@ -79,6 +96,25 @@ pub fn compare(str1: &str, q: &str) -> f64 {
     lcs.len() as f64 * (normalized_len_compare(str1, &lcs))
 }
 
+/// Ranks a list of strings based on their similarity to a query string using the `compare` function.
+///
+/// # Arguments
+///
+/// * `query` - A reference to the query string.
+/// * `subjects` - A vector of references to the subject strings to be ranked.
+///
+/// # Returns
+///
+/// * A vector of tuples containing the similarity score and the corresponding subject string, sorted by score in descending order.
+///
+/// # Examples
+///
+/// ```
+/// let query = "Ad";
+/// let subjects = vec!["Ad_Fields", "Users", "Aged_groups"];
+/// let result = rank(query, subjects);
+/// assert_eq!(result, vec![(2.0, "Ad_Fields"), (1.0, "Aged_groups"), (0.0, "Users")]);
+/// ```
 pub fn rank<'a>(query: &str, subjects: Vec<&'a str>) -> Vec<(f64, &'a str)> {
     let mut result = subjects
         .iter()
@@ -88,6 +124,35 @@ pub fn rank<'a>(query: &str, subjects: Vec<&'a str>) -> Vec<(f64, &'a str)> {
     result
 }
 
+/// Ranks a list of structured objects based on their similarity to a query string using a custom accessor function.
+///
+/// # Arguments
+///
+/// * `query` - A reference to the query string.
+/// * `subjects` - A vector of structured objects to be ranked.
+/// * `accessor` - A function that takes a reference to a structured object and returns a string for comparison.
+///
+/// # Returns
+///
+/// * A vector of tuples containing the similarity score and the corresponding structured object, sorted by score in descending order.
+///
+/// # Examples
+///
+/// ```
+/// struct Person {
+///     name: String,
+/// }
+///
+/// let query = "Ad";
+/// let subjects = vec![
+///     Person { name: "Ad_Fields".to_string() },
+///     Person { name: "Users".to_string() },
+///     Person { name: "Aged_groups".to_string() },
+/// ];
+/// let result = struct_rank(query, subjects, |p| p.name.clone());
+/// assert_eq!(result[0].0, 2.0);
+/// assert_eq!(result[0].1.name, "Ad_Fields");
+/// ```
 pub fn struct_rank<'a, T: Clone>(
     query: &str,
     subjects: Vec<T>,
